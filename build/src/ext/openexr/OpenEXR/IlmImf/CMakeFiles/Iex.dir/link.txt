@@ -1,0 +1,2 @@
+D:\mingw64\bin\ar.exe qc libIex.a CMakeFiles/Iex.dir/IexBaseExc.cpp.obj CMakeFiles/Iex.dir/IexThrowErrnoExc.cpp.obj
+D:\mingw64\bin\ranlib.exe libIex.a

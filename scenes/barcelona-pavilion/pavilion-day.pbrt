@@ -1,0 +1,40 @@
+Film "image"
+    "integer xresolution" 1600 "integer yresolution" 850
+#    "integer xresolution" 800 "integer yresolution" 425
+    "string filename" "pavilion-day.exr"
+    "float maxsampleluminance" 10
+    "float scale" 5
+# imgtool convert -bloomlevel .8 pavilion-day.{exr,png} 
+
+Scale -1 1 1
+LookAt -10 2.25 10   7 1.75 -3   0 1 0
+Camera "perspective" "float fov" 45
+    "float focaldistance" 15 "float lensradius" .0125
+
+# above view
+#LookAt -10 100 10    -10 0 10  1 0 0
+#Camera "perspective" "float fov" 60
+
+Sampler "sobol" "integer pixelsamples" 4096
+#Sampler "sobol" "integer pixelsamples" 32
+Integrator "path"
+
+WorldBegin
+
+AttributeBegin
+Rotate -10 0 0 1
+Rotate -160 0 1 0
+Rotate -90 1 0 0
+#LightSource "infinite" "string mapname" "textures/skylight-morn.exr"
+#  "rgb L" [5 3.5 3]  # make more red/orange
+LightSource "infinite" "string mapname" "textures/sky.exr"
+AttributeEnd
+
+# Converted from "pavillon_barcelone_v1.2.obj" by obj2pbrt
+# Scene bounds: (-44.940453, -2.236825, -44.940453) - (97.870842, 5.186341, 44.940453)
+
+Include "materials.pbrt"
+
+Include "geometry.pbrt"
+
+WorldEnd

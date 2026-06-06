@@ -1,0 +1,2 @@
+D:\mingw64\bin\ar.exe qc libHalf.a CMakeFiles/Half.dir/half.cpp.obj
+D:\mingw64\bin\ranlib.exe libHalf.a

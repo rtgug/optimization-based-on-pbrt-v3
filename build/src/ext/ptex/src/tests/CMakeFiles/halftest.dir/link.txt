@@ -1,0 +1,3 @@
+D:\CMake\bin\cmake.exe -E rm -f CMakeFiles\halftest.dir/objects.a
+D:\mingw64\bin\ar.exe qc CMakeFiles\halftest.dir/objects.a @CMakeFiles\halftest.dir\objects1.rsp
+D:\mingw64\bin\c++.exe  -std=gnu++11 -Wno-conversion-null -O3 -DNDEBUG  -static -Wl,--whole-archive CMakeFiles\halftest.dir/objects.a -Wl,--no-whole-archive -o halftest.exe -Wl,--out-implib,libhalftest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\halftest.dir\linkLibs.rsp

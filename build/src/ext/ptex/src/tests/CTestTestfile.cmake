@@ -1,0 +1,14 @@
+# CMake generated Testfile for 
+# Source directory: D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests
+# Build directory: D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(wtest "D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests/wtest.exe")
+set_tests_properties(wtest PROPERTIES  _BACKTRACE_TRIPLES "D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;32;add_test;D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;0;")
+add_test(rtest "D:/CMake/bin/cmake.exe" "-DOUT=D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests/rtest.out" "-DDATA=D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/rtestok.dat" "-DCMD=D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests/rtest.exe" "-P" "D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/compare_test.cmake")
+set_tests_properties(rtest PROPERTIES  _BACKTRACE_TRIPLES "D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;23;add_test;D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;33;add_compare_test;D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;0;")
+add_test(ftest "D:/CMake/bin/cmake.exe" "-DOUT=D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests/ftest.out" "-DDATA=D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/ftestok.dat" "-DCMD=D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests/ftest.exe" "-P" "D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/compare_test.cmake")
+set_tests_properties(ftest PROPERTIES  _BACKTRACE_TRIPLES "D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;23;add_test;D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;34;add_compare_test;D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;0;")
+add_test(halftest "D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests/halftest.exe")
+set_tests_properties(halftest PROPERTIES  _BACKTRACE_TRIPLES "D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;35;add_test;D:/Ray Tracing Optimization/optimization-based-on-pbrt-v3/src/ext/ptex/src/tests/CMakeLists.txt;0;")

@@ -1,0 +1,2 @@
+D:\mingw64\bin\ar.exe qc libIexMath.a CMakeFiles/IexMath.dir/IexMathFloatExc.cpp.obj CMakeFiles/IexMath.dir/IexMathFpu.cpp.obj
+D:\mingw64\bin\ranlib.exe libIexMath.a
