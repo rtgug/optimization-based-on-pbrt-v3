@@ -1,0 +1,176 @@
+MakeNamedMaterial "Material" 
+        "float roughness" [ 0.0104080001 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "rgb Kd" [ 0.639999986 0.639999986 0.639999986 ] 
+        "rgb Ks" [ 0.5 0.5 0.5 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+MakeNamedMaterial "None" 
+        "float roughness" [ 0 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "rgb Kd" [ 0.800000012 0.800000012 0.800000012 ] 
+        "rgb Ks" [ 0.800000012 0.800000012 0.800000012 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+MakeNamedMaterial "black_glossy" 
+        "float roughness" [ 0.0104080001 ] 
+        "string type" [ "plastic" ] 
+        "rgb Kd" [ 0.02 .02 .02 ]
+        "rgb Ks" [ 0.02 .02 .02 ]
+
+MakeNamedMaterial "candle_flame" 
+        "float roughness" [ 0.0104080001 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "rgb Kd" [ 0.639999986 0.639999986 0.639999986 ] 
+        "rgb Ks" [ 0.5 0.5 0.5 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+Texture "concrete-kd-img" "color" "imagemap" 
+        "string filename" [ "textures/Mies-BCN_M121.png" ] 
+Texture "concrete-kd" "color" "scale" 
+        "texture tex1" [ "concrete-kd-img" ] 
+        "rgb tex2" [ 0.639999986 0.639999986 0.639999986 ] 
+MakeNamedMaterial "concrete" 
+        "float roughness" [ 0.0104080001 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "texture Kd" [ "concrete-kd" ] 
+        "rgb Ks" [ 0.5 0.5 0.5 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+Texture "concrete_Mies-BCN_M121.jpg-kd-img" "color" "imagemap" 
+        "string filename" [ "textures/Mies-BCN_M121.png" ] 
+Texture "concrete_Mies-BCN_M121.jpg-kd" "color" "scale" 
+        "texture tex1" [ "concrete_Mies-BCN_M121.jpg-kd-img" ] 
+        "rgb tex2" [ 0.639999986 0.639999986 0.639999986 ] 
+MakeNamedMaterial "concrete_Mies-BCN_M121.png" 
+        "float roughness" [ 0.0104080001 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "texture Kd" [ "concrete_Mies-BCN_M121.jpg-kd" ] 
+        "rgb Ks" [ 0.5 0.5 0.5 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+MakeNamedMaterial "glass_architectural" 
+        "string type" [ "glass" ] 
+
+Texture "grass-kd-img" "color" "imagemap" 
+        "string filename" [ "textures/grass_mid_seamless.png" ] 
+Texture "grass-kd" "color" "scale"
+        "texture tex1" "grass-kd-img"
+        "rgb tex2" [ .5 .5 .5] 
+Texture "grass-kd" "color" "scale"
+        "texture tex1" "grass-kd-img"
+        "rgb tex2" [.3 .3 .3]
+ 
+MakeNamedMaterial "grass" 
+        "float roughness" [ 0.1 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "texture Kd" "grass-kd"
+        "rgb Ks" [ 0.5 0.5 0.5 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+MakeNamedMaterial "caulk"
+	"string type" "matte"
+        "rgb Kd" [ .4 .4 .4 ]
+        "float sigma" 20
+
+MakeNamedMaterial "leather_white" 
+        "string type" [ "fourier" ] 
+        "string bsdffile" "bsdfs/leather.bsdf"
+
+Texture "marble-kd-img" "color" "imagemap" 
+        "string filename" [ "textures/Mies-BCN_M01.png" ] 
+MakeNamedMaterial "marble" 
+        "float uroughness" [ 0.001 ]
+        "float vroughness" [ 0.001 ]
+        "string type" [ "substrate" ] 
+        "texture Kd" "marble-kd-img"
+        "rgb Ks" [ 0.2 .2 .2]
+
+Texture "marmol_verde-kd-img" "color" "imagemap" 
+        "string filename" [ "textures/Mies-BCN_M11.png" ] 
+MakeNamedMaterial "marmol_verde" 
+        "float uroughness" [ 0.001 ]
+        "float vroughness" [ 0.001 ]
+        "string type" [ "substrate" ] 
+        "texture Kd" "marmol_verde-kd-img"
+        "rgb Ks" [ 0.2 .2 .2]
+
+MakeNamedMaterial "metal" 
+        "string type" [ "metal" ] 
+        "spectrum k" "spds/Al.k.spd"
+        "spectrum eta" "spds/Al.eta.spd"
+
+# Mies-BCN_M081bump.png
+Texture "pavet-bump" "float" "imagemap" 
+        "string filename" [ "textures/Mies-BCN_M081bump.png" ] 
+Texture "pavet-kd-img" "color" "imagemap" 
+        "string filename" [ "textures/Mies-BCN_M081.png" ] 
+Texture "pavet-kd-scaled" "color" "scale"
+        "texture tex1" "pavet-kd-img"
+        "rgb tex2" [.7 .7 .7]
+Texture "pavet-kd" "color" "scale" 
+        "texture tex1" [ "pavet-kd-img" ] 
+        "rgb tex2" [ 0.639999986 0.639999986 0.639999986 ] 
+MakeNamedMaterial "pavet" 
+        "float uroughness" [ 0.1 ] 
+        "float vroughness" [ 0.1 ] 
+        "string type" [ "substrate" ] 
+        "texture Kd" [ "pavet-kd" ] 
+        "rgb Ks" [ 0.1 0.1 0.1 ] 
+        "texture bumpmap" "pavet-bump"
+
+# rocks below water
+Texture "rocks-kd-img" "color" "imagemap" 
+        "string filename" [ "textures/rocks.png" ] 
+MakeNamedMaterial "pebbles.ground" 
+        "float roughness" [ 0.0104080001 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "texture Kd" "rocks-kd-img"
+        "rgb Ks" [ 0.5 0.5 0.5 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+Texture "water-bump-base" "float" "imagemap" 
+        "string filename" [ "textures/water-raindrop.png" ] 
+Texture "water-bump" "float" "scale"
+        "texture tex1" "water-bump-base"
+        "float tex2" .005
+MakeNamedMaterial "water" 
+        "string type" [ "glass" ] 
+        "texture bumpmap" "water-bump"
+
+MakeNamedMaterial "wax" 
+        "float roughness" [ 0.0104080001 ] 
+        "float index" [ 1 ] 
+        "string type" [ "uber" ] 
+        "rgb Kd" [ 0.639999986 0.639999986 0.639999986 ] 
+        "rgb Ks" [ 0.5 0.5 0.5 ] 
+        "rgb Kt" [ 0 0 0 ] 
+        "rgb opacity" [ 1 1 1 ] 
+
+MakeNamedMaterial "white_mat" 
+        "string type" [ "matte" ] 
+        "rgb Kd" [ 0.6 .6 .6 ]
+        "float sigma" [20] 
+
+# Name "Cube.024_Cube.053"
+# floating lanterns in water
+Texture "wood" "color" "imagemap" 
+        "string filename" [ "textures/wood.png" ] 
+MakeNamedMaterial "wood" 
+        "string type" [ "substrate" ] 
+        "texture Kd" "wood"
+        "rgb Ks" [ 0.1 0.1 0.1 ] 

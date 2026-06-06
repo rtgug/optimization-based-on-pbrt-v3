@@ -47,8 +47,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#elif defined(PBRT_IS_WINDOWS)
-#include <windows.h>  // Windows file mapping API
+#elif defined(PBRT_IS_MSVC)
+#include <windows.h>  // Windows file mapping API (MSVC only)
 #endif
 #include <functional>
 #include <iostream>
@@ -134,7 +134,8 @@ std::unique_ptr<Tokenizer> Tokenizer::CreateFromFile(
     // return std::make_unique<Tokenizer>(ptr, len);
     return std::unique_ptr<Tokenizer>(
         new Tokenizer(ptr, len, filename, std::move(errorCallback)));
-#elif defined(PBRT_IS_WINDOWS)
+#elif defined(PBRT_IS_MSVC)
+    // Windows memory-mapped file path — only for MSVC (crashes under MinGW)
     auto errorReportLambda = [&errorCallback,
                               &filename]() -> std::unique_ptr<Tokenizer> {
         LPSTR messageBuffer = nullptr;
@@ -214,7 +215,7 @@ Tokenizer::Tokenizer(std::string str,
     tokenizerMemory += contents.size();
 }
 
-#if defined(PBRT_HAVE_MMAP) || defined(PBRT_IS_WINDOWS)
+#if defined(PBRT_HAVE_MMAP) || defined(PBRT_IS_MSVC)
 Tokenizer::Tokenizer(void *ptr, size_t len, std::string filename,
                      std::function<void(const char *)> errorCallback)
     : loc(filename),
@@ -231,7 +232,7 @@ Tokenizer::~Tokenizer() {
     if (unmapPtr && unmapLength > 0)
         if (munmap(unmapPtr, unmapLength) != 0)
             errorCallback(StringPrintf("munmap: %s", strerror(errno)).c_str());
-#elif defined(PBRT_IS_WINDOWS)
+#elif defined(PBRT_IS_MSVC)
     if (unmapPtr) {
         if (UnmapViewOfFile(unmapPtr) == 0) {
             LPSTR messageBuffer = nullptr;

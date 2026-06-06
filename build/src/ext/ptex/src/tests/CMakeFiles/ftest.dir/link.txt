@@ -1,0 +1,3 @@
+D:\CMake\bin\cmake.exe -E rm -f CMakeFiles\ftest.dir/objects.a
+D:\mingw64\bin\ar.exe qc CMakeFiles\ftest.dir/objects.a @CMakeFiles\ftest.dir\objects1.rsp
+D:\mingw64\bin\c++.exe  -std=gnu++11 -Wno-conversion-null -O3 -DNDEBUG  -static -Wl,--whole-archive CMakeFiles\ftest.dir/objects.a -Wl,--no-whole-archive -o ftest.exe -Wl,--out-implib,libftest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ftest.dir\linkLibs.rsp

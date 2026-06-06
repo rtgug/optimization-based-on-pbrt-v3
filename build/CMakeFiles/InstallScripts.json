@@ -1,0 +1,23 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/zlib/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/IlmBase/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/IlmBase/Half/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/IlmBase/Iex/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/IlmBase/IexMath/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/IlmBase/Imath/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/IlmBase/IlmThread/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/OpenEXR/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/openexr/OpenEXR/IlmImf/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/glog/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/ptex/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/utils/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/tests/cmake_install.cmake",
+		"D:/Ray Tracing Optimization/Optimization-based-on-pbrt-v3/build/src/ext/ptex/src/doc/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
