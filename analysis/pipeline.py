@@ -40,7 +40,8 @@ def step_reference():
     tmp_exr   = scene_dir / f"{ref_stem}.pfm"
 
     modify_scene_spp(SCENE_FILE, REFERENCE_SPP, tmp_scene,
-                     OVERRIDE_RESOLUTION, output_name=ref_stem)
+                     OVERRIDE_RESOLUTION, output_name=ref_stem,
+                     maxdepth=50, rrthreshold=0.0)  # unbiased reference
     render_one(tmp_scene, REFERENCE_FILE, REFERENCE_SPP, cwd=scene_dir)
 
     if tmp_exr.exists() and not REFERENCE_FILE.exists():

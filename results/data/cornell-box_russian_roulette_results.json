@@ -1,0 +1,30 @@
+[
+  {
+    "spp": 4,
+    "success": true,
+    "elapsed_sec": 0,
+    "cached": true,
+    "image": "D:\\Ray Tracing Optimization\\optimization-based-on-pbrt-v3\\results\\images\\cornell-box_russian_roulette_spp0004.pfm"
+  },
+  {
+    "spp": 16,
+    "success": true,
+    "elapsed_sec": 0,
+    "cached": true,
+    "image": "D:\\Ray Tracing Optimization\\optimization-based-on-pbrt-v3\\results\\images\\cornell-box_russian_roulette_spp0016.pfm"
+  },
+  {
+    "spp": 64,
+    "success": true,
+    "elapsed_sec": 0,
+    "cached": true,
+    "image": "D:\\Ray Tracing Optimization\\optimization-based-on-pbrt-v3\\results\\images\\cornell-box_russian_roulette_spp0064.pfm"
+  },
+  {
+    "spp": 256,
+    "success": true,
+    "elapsed_sec": 0,
+    "cached": true,
+    "image": "D:\\Ray Tracing Optimization\\optimization-based-on-pbrt-v3\\results\\images\\cornell-box_russian_roulette_spp0256.pfm"
+  }
+]

@@ -20,10 +20,46 @@ from analysis.config import (
 )
 
 
+def modify_integrator_params(text: str, maxdepth: int = None,
+                            rrthreshold: float = None) -> str:
+    """Modify (or add) integrator parameters in scene text.
+
+    Finds the ``Integrator "path"`` line, strips any existing
+    *maxdepth* / *rrthreshold* parameters, then appends the
+    requested values.  Parameters left as ``None`` are left
+    unchanged (any existing value is preserved only if both
+    are None, otherwise stripped).
+    """
+    if maxdepth is None and rrthreshold is None:
+        return text
+
+    import re
+    lines = text.split('\n')
+    for i, line in enumerate(lines):
+        if re.match(r'\s*Integrator\s+"path"', line):
+            # Remove existing maxdepth / rrthreshold if present
+            line = re.sub(r'"integer maxdepth"\s+\[\d+\]', '', line)
+            line = re.sub(r'"float rrthreshold"\s+\[[\d.]+(?:e[+-]?\d+)?\]',
+                          '', line)
+            # Collapse whitespace
+            line = re.sub(r'\s{2,}', ' ', line).strip()
+            # Append requested parameters
+            if maxdepth is not None:
+                line += f' "integer maxdepth" [{maxdepth}]'
+            if rrthreshold is not None:
+                line += f' "float rrthreshold" [{rrthreshold}]'
+            lines[i] = line
+            break
+    return '\n'.join(lines)
+
+
 def modify_scene_spp(scene_path: Path, spp: int, out_path: Path,
                      override_resolution: tuple | None = None,
-                     output_name: str = "temp_render") -> Path:
-    """Create a temporary scene with modified SPP, resolution, and output name.
+                     output_name: str = "temp_render",
+                     maxdepth: int = None,
+                     rrthreshold: float = None) -> Path:
+    """Create a temporary scene with modified SPP, resolution, output name,
+    and integrator parameters.
 
     The temp file is placed next to the original scene so relative
     ``Include`` paths (e.g. ``geometry/killeroo.pbrt``) still resolve.
@@ -61,6 +97,10 @@ def modify_scene_spp(scene_path: Path, spp: int, out_path: Path,
         rf'\g<1>"{output_name}.pfm"',
         text
     )
+
+    # --- Integrator parameters (maxdepth, rrthreshold) ---
+    text = modify_integrator_params(text, maxdepth=maxdepth,
+                                    rrthreshold=rrthreshold)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(text, encoding="utf-8")
@@ -112,12 +152,16 @@ def render_one(scene_path: Path, output_exr: Path, spp: int,
 
 
 def run_sweep(scene: Path, experiment_name: str, spp_list: list,
-              nthreads: int = 0) -> list:
+              nthreads: int = 0, maxdepth: int = None,
+              rrthreshold: float = None) -> list:
     """Run one experiment across all SPP values.
 
     Temp scenes are written into the scene's directory so relative
     ``Include`` statements stay valid.  Output images are moved from
     the scene directory to ``results/images/`` after each render.
+
+    *maxdepth* and *rrthreshold*, when provided, override the
+    corresponding integrator parameters in the scene file.
     """
     results = []
     scene_dir = scene.parent
@@ -138,7 +182,8 @@ def run_sweep(scene: Path, experiment_name: str, spp_list: list,
             continue
 
         modify_scene_spp(scene, spp, tmp_scene, OVERRIDE_RESOLUTION,
-                         output_name=tmp_stem)
+                         output_name=tmp_stem,
+                         maxdepth=maxdepth, rrthreshold=rrthreshold)
         r = render_one(tmp_scene, out_exr, spp, nthreads, cwd=scene_dir)
         r["image"] = str(out_exr)
 
@@ -206,7 +251,8 @@ def main():
         tmp_scene = scene_dir / f"{ref_stem}.pbrt"
         tmp_exr   = scene_dir / f"{ref_stem}.pfm"
         modify_scene_spp(SCENE_FILE, REFERENCE_SPP, tmp_scene,
-                         OVERRIDE_RESOLUTION, output_name=ref_stem)
+                         OVERRIDE_RESOLUTION, output_name=ref_stem,
+                         maxdepth=50, rrthreshold=0.0)  # unbiased reference
         r = render_one(tmp_scene, REFERENCE_FILE, REFERENCE_SPP,
                        args.nthreads, cwd=scene_dir)
         if tmp_exr.exists() and not REFERENCE_FILE.exists():
@@ -222,7 +268,11 @@ def main():
         print(f"EXPERIMENT: {exp_info['label']}  ({exp_name})")
         print(f"  SPP sweep: {spp_list}")
         print(f"{'='*60}")
-        results = run_sweep(SCENE_FILE, exp_name, spp_list, args.nthreads)
+        results = run_sweep(
+            SCENE_FILE, exp_name, spp_list, args.nthreads,
+            maxdepth=exp_info.get("maxdepth"),
+            rrthreshold=exp_info.get("rrthreshold"),
+        )
 
         # Save results JSON
         data_path = DATA_DIR / f"{SCENE_NAME}_{exp_name}_results.json"

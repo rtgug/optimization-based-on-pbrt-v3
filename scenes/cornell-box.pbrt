@@ -1,0 +1,95 @@
+# Cornell Box — standard pbrt-v3 format with area light
+LookAt 0 0.8 3   0 0.2 -0.3   0 1 0
+Camera "perspective" "float fov" [45]
+Film "image"
+    "integer xresolution" [64] "integer yresolution" [64]
+    "string filename" "cornell-box.pfm"
+Sampler "halton" "integer pixelsamples" [16]
+Integrator "path"
+
+WorldBegin
+
+# ── Ceiling area light (geometry at y=0.99, normal points down for emission) ──
+AttributeBegin
+    AreaLightSource "diffuse" "color L" [12 12 12]
+    Material "matte" "color Kd" [1 1 1]
+    Shape "trianglemesh"
+        "point P" [ -0.3 0.99 -0.3   0.3 0.99 -0.3   0.3 0.99 0.3   -0.3 0.99 -0.3   0.3 0.99 0.3   -0.3 0.99 0.3 ]
+        "integer indices" [ 0 1 2   3 4 5 ]
+AttributeEnd
+
+# ── Floor (white) ──
+Material "matte" "color Kd" [0.75 0.75 0.75]
+Shape "trianglemesh"
+    "point P" [ -1 -1 -1   1 -1 -1   1 -1 1   -1 -1 -1   1 -1 1   -1 -1 1 ]
+    "integer indices" [ 0 1 2   3 4 5 ]
+
+# ── Ceiling (white) ──
+Material "matte" "color Kd" [0.75 0.75 0.75]
+Shape "trianglemesh"
+    "point P" [ -1 1 -1   1 1 -1   1 1 1   -1 1 -1   1 1 1   -1 1 1 ]
+    "integer indices" [ 0 1 2   3 4 5 ]
+
+# ── Back wall (white) ──
+Material "matte" "color Kd" [0.75 0.75 0.75]
+Shape "trianglemesh"
+    "point P" [ -1 -1 -1   -1 1 -1   1 1 -1   -1 -1 -1   1 1 -1   1 -1 -1 ]
+    "integer indices" [ 0 1 2   3 4 5 ]
+
+# ── Left wall (red) ──
+Material "matte" "color Kd" [0.63 0.065 0.05]
+Shape "trianglemesh"
+    "point P" [ -1 -1 1   -1 1 -1   -1 1 1   -1 -1 1   -1 -1 -1   -1 1 -1 ]
+    "integer indices" [ 0 1 2   3 4 5 ]
+
+# ── Right wall (green) ──
+Material "matte" "color Kd" [0.14 0.45 0.091]
+Shape "trianglemesh"
+    "point P" [ 1 -1 -1   1 -1 1   1 1 1   1 -1 -1   1 1 1   1 1 -1 ]
+    "integer indices" [ 0 1 2   3 4 5 ]
+
+# ── Tall box (left, whitish) ──
+AttributeBegin
+    Translate -0.35 -0.5 -0.35
+    Rotate -15 0 1 0
+    Material "matte" "color Kd" [0.725 0.71 0.68]
+    Shape "trianglemesh"
+        "point P" [ 0 0 -0.2   0.3 0 -0.2   0.3 0.85 -0.2   0 0 -0.2   0.3 0.85 -0.2   0 0.85 -0.2
+                     0 0 0.2    0.3 0 0.2    0.3 0.85 0.2    0 0 0.2    0.3 0.85 0.2    0 0.85 0.2
+                     0 0 -0.2   0 0 0.2    0 0.85 0.2    0 0 -0.2   0 0.85 0.2    0 0.85 -0.2
+                     0.3 0 -0.2 0.3 0 0.2  0.3 0.85 0.2  0.3 0 -0.2 0.3 0.85 0.2  0.3 0.85 -0.2
+                     0 0.85 -0.2 0.3 0.85 -0.2 0.3 0.85 0.2  0 0.85 -0.2 0.3 0.85 0.2 0 0.85 0.2
+                     0 0 -0.2   0 0 0.2    0.3 0 0.2    0 0 -0.2   0.3 0 0.2    0.3 0 -0.2 ]
+        "integer indices" [ 0 1 2   3 4 5   6 7 8   9 10 11   12 13 14   15 16 17   18 19 20   21 22 23   24 25 26   27 28 29   30 31 32   33 34 35 ]
+AttributeEnd
+
+# ── Short box (right, dark) ──
+AttributeBegin
+    Translate 0.25 -0.85 -0.15
+    Rotate 18 0 1 0
+    Material "matte" "color Kd" [0.065 0.046 0.022]
+    Shape "trianglemesh"
+        "point P" [ 0 0 -0.2   0.3 0 -0.2   0.3 0.55 -0.2   0 0 -0.2   0.3 0.55 -0.2   0 0.55 -0.2
+                     0 0 0.2    0.3 0 0.2    0.3 0.55 0.2    0 0 0.2    0.3 0.55 0.2    0 0.55 0.2
+                     0 0 -0.2   0 0 0.2    0 0.55 0.2    0 0 -0.2   0 0.55 0.2    0 0.55 -0.2
+                     0.3 0 -0.2 0.3 0 0.2  0.3 0.55 0.2  0.3 0 -0.2 0.3 0.55 0.2  0.3 0.55 -0.2
+                     0 0.55 -0.2 0.3 0.55 -0.2 0.3 0.55 0.2  0 0.55 -0.2 0.3 0.55 0.2 0 0.55 0.2
+                     0 0 -0.2   0 0 0.2    0.3 0 0.2    0 0 -0.2   0.3 0 0.2    0.3 0 -0.2 ]
+        "integer indices" [ 0 1 2   3 4 5   6 7 8   9 10 11   12 13 14   15 16 17   18 19 20   21 22 23   24 25 26   27 28 29   30 31 32   33 34 35 ]
+AttributeEnd
+
+# ── Mirror sphere ──
+AttributeBegin
+    Translate 0.0 -0.8 -0.1
+    Material "mirror" "color Kr" [0.9 0.9 0.9]
+    Shape "sphere" "float radius" [0.18]
+AttributeEnd
+
+# ── Glass sphere (refraction creates deep path chains) ──
+AttributeBegin
+    Translate 0.25 -0.75 -0.4
+    Material "glass" "color Kr" [1 1 1] "color Kt" [1 1 1] "float index" [1.5]
+    Shape "sphere" "float radius" [0.15]
+AttributeEnd
+
+WorldEnd

@@ -16,8 +16,8 @@ PLOT_DIR    = RESULTS_DIR / "plots"
 PBRT_EXE    = BUILD_DIR / "pbrt.exe"
 
 # ── Scene ───────────────────────────────────────────────────
-SCENE_FILE  = SCENES_DIR / "test-simple.pbrt"
-SCENE_NAME  = "test-simple"
+SCENE_FILE  = SCENES_DIR / "cornell-box.pbrt"
+SCENE_NAME  = "cornell-box"
 
 # Resolution overrides (optional, set None to use scene defaults)
 OVERRIDE_RESOLUTION = None   # use scene's native resolution (64x64)
@@ -30,11 +30,35 @@ REFERENCE_FILE = IMG_DIR / f"{SCENE_NAME}_reference_spp{REFERENCE_SPP}.pfm"
 SPP_SWEEP = [4, 16, 64, 256]
 
 # ── Branches / Experiments ──────────────────────────────────
+# Each experiment specifies:
+#   label       – display name for plots
+#   branch      – git branch to checkout (for multi-branch comparisons)
+#   maxdepth    – override Integrator "maxdepth" in the scene (None = keep default)
+#   rrthreshold – override Integrator "rrthreshold" in the scene (None = keep default)
+#   description – human-readable summary
+#
+# Key: when rrthreshold=0, Russian roulette is DISABLED → fixed-depth
+# truncation (biased). When rrthreshold≈0.25, RR is ACTIVE and paths
+# terminate probabilistically (unbiased).
 EXPERIMENTS = {
     "baseline": {
-        "label": "Baseline (fixed-depth)",
+        "label": "Baseline (fixed-depth, biased)",
         "branch": "master",
-        "description": "Unmodified pbrt-v3 path integrator",
+        "maxdepth": 5,
+        "rrthreshold": 0.0,   # RR disabled → pure fixed-depth truncation
+        "description": "Standard path integrator with fixed bounce limit. "
+                       "Paths are truncated at maxdepth=5, discarding "
+                       "contributions from deeper bounces → biased.",
+    },
+    "russian_roulette": {
+        "label": "Russian Roulette (unbiased)",
+        "branch": "feat/optimization",
+        "maxdepth": 50,
+        "rrthreshold": 0.25,
+        "description": "Path integrator with Russian roulette termination. "
+                       "After 3 bounces, paths with contribution below "
+                       "rrThreshold are probabilistically terminated with "
+                       "survival weight compensation → unbiased.",
     },
 }
 
