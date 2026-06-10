@@ -1,3 +1,0 @@
-D:\CMake\bin\cmake.exe -E rm -f CMakeFiles\eLut.dir/objects.a
-D:\mingw64\bin\ar.exe qc CMakeFiles\eLut.dir/objects.a @CMakeFiles\eLut.dir\objects1.rsp
-D:\mingw64\bin\c++.exe  -std=gnu++11 -Wno-conversion-null -Wno-unused-result -Wno-deprecated -O3 -DNDEBUG  -static -Wl,--whole-archive CMakeFiles\eLut.dir/objects.a -Wl,--no-whole-archive -o eLut.exe -Wl,--out-implib,libeLut.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\eLut.dir\linkLibs.rsp

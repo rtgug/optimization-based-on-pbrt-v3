@@ -1,3 +1,0 @@
-D:\CMake\bin\cmake.exe -E rm -f CMakeFiles\pbrt_exe.dir/objects.a
-D:\mingw64\bin\ar.exe qc CMakeFiles\pbrt_exe.dir/objects.a @CMakeFiles\pbrt_exe.dir\objects1.rsp
-D:\mingw64\bin\c++.exe  -std=gnu++11 -Wno-conversion-null -O3 -DNDEBUG  -static -Wl,--whole-archive CMakeFiles\pbrt_exe.dir/objects.a -Wl,--no-whole-archive -o pbrt.exe -Wl,--out-implib,libpbrt.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\pbrt_exe.dir\linkLibs.rsp
