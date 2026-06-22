@@ -128,18 +128,18 @@ def step_plots():
     # ── Convergence curve ──
     print("\n  Plot 1: Convergence curve")
     plot_convergence(all_data, metric="rmse",
-                     title=f"Convergence Curve – {SCENE_NAME}",
-                     filename=f"{SCENE_NAME}_convergence.png")
+                     title="Convergence Curve — Optimized BVH vs Stock BVH (Smoke Scene)",
+                     filename="smoke_bvh_convergence.png")
 
     # ── Error heatmap (best-SPP baseline) ──
     print("  Plot 2: Error heatmap")
     max_spp = SPP_SWEEP[-1]
-    baseline_img = IMG_DIR / f"{SCENE_NAME}_baseline_spp{max_spp:04d}.pfm"
+    baseline_img = IMG_DIR / f"{SCENE_NAME}_baseline_bvh_spp{max_spp:04d}.pfm"
     if baseline_img.exists() and REFERENCE_FILE.exists():
         plot_error_heatmap(
             baseline_img, REFERENCE_FILE,
-            title=f"Per-Pixel Error (Baseline, SPP={max_spp})",
-            filename=f"{SCENE_NAME}_error_heatmap.png",
+            title=f"Per-Pixel Error — Stock BVH Baseline (Smoke Scene, SPP={max_spp})",
+            filename="smoke_bvh_error_heatmap.png",
         )
 
     # ── If multiple experiments: side-by-side error comparison ──
@@ -151,7 +151,7 @@ def step_plots():
         if img_a.exists() and img_b.exists():
             plot_side_by_side_heatmaps(
                 img_a, img_b, REFERENCE_FILE,
-                filename=f"{SCENE_NAME}_error_comparison.png",
+                filename="smoke_bvh_error_comparison.png",
             )
 
     print("\n  [OK] All plots saved ->", PLOT_DIR)

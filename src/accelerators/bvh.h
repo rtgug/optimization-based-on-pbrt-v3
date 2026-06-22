@@ -60,7 +60,9 @@ class BVHAccel : public Aggregate {
     // BVHAccel Public Methods
     BVHAccel(std::vector<std::shared_ptr<Primitive>> p,
              int maxPrimsInNode = 1,
-             SplitMethod splitMethod = SplitMethod::SAH);
+             SplitMethod splitMethod = SplitMethod::SAH,
+             Float traversalCost = 0.5f,
+             Float intersectionCost = 1.0f);
     Bounds3f WorldBound() const;
     ~BVHAccel();
     bool Intersect(const Ray &ray, SurfaceInteraction *isect) const;
@@ -70,8 +72,10 @@ class BVHAccel : public Aggregate {
     // BVHAccel Private Methods
     BVHBuildNode *recursiveBuild(
         MemoryArena &arena, std::vector<BVHPrimitiveInfo> &primitiveInfo,
-        int start, int end, int *totalNodes,
-        std::vector<std::shared_ptr<Primitive>> &orderedPrims);
+        int start, int end, std::atomic<int> *totalNodes,
+        std::vector<std::shared_ptr<Primitive>> &orderedPrims,
+        std::atomic<int> *orderedPrimsOffset = nullptr,
+        int depth = 0);
     BVHBuildNode *HLBVHBuild(
         MemoryArena &arena, const std::vector<BVHPrimitiveInfo> &primitiveInfo,
         int *totalNodes,
@@ -90,8 +94,14 @@ class BVHAccel : public Aggregate {
     // BVHAccel Private Data
     const int maxPrimsInNode;
     const SplitMethod splitMethod;
+    const Float traversalCost;
+    const Float intersectionCost;
     std::vector<std::shared_ptr<Primitive>> primitives;
     LinearBVHNode *nodes = nullptr;
+
+    // Build-time constants
+    static const int PARALLEL_BUILD_THRESHOLD = 1024;
+    static const int MAX_RECURSION_DEPTH_SERIAL = 8;
 };
 
 std::shared_ptr<BVHAccel> CreateBVHAccelerator(

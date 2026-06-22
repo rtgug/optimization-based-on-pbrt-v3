@@ -14,16 +14,17 @@ DATA_DIR    = RESULTS_DIR / "data"
 PLOT_DIR    = RESULTS_DIR / "plots"
 
 PBRT_EXE    = BUILD_DIR / "pbrt.exe"
+PBRT_EXE_BASELINE = BUILD_DIR / "pbrt_baseline.exe"  # v1's unoptimized BVH pbrt for comparison
 
 # ── Scene ───────────────────────────────────────────────────
-SCENE_FILE  = SCENES_DIR / "test-simple.pbrt"
-SCENE_NAME  = "test-simple"
+SCENE_FILE  = SCENES_DIR / "cloud" / "smoke.pbrt"
+SCENE_NAME  = "smoke"
 
 # Resolution overrides (optional, set None to use scene defaults)
-OVERRIDE_RESOLUTION = None   # use scene's native resolution (64x64)
+OVERRIDE_RESOLUTION = (100, 100)   # Reduced for CPU rendering feasibility
 
 # ── Reference image ─────────────────────────────────────────
-REFERENCE_SPP  = 1024
+REFERENCE_SPP  = 512
 REFERENCE_FILE = IMG_DIR / f"{SCENE_NAME}_reference_spp{REFERENCE_SPP}.pfm"
 
 # ── Sampling sweep ──────────────────────────────────────────
@@ -31,10 +32,20 @@ SPP_SWEEP = [4, 16, 64, 256]
 
 # ── Branches / Experiments ──────────────────────────────────
 EXPERIMENTS = {
-    "baseline": {
-        "label": "Baseline (fixed-depth)",
+    "baseline_bvh": {
+        "label": "Baseline (Stock BVH)",
         "branch": "master",
-        "description": "Unmodified pbrt-v3 path integrator",
+        "pbrt_exe": PBRT_EXE_BASELINE,  # v1's pbrt with unoptimized BVH
+        "description": "Original pbrt-v3 BVH acceleration structure (no optimizations). "
+                       "Rendered with baseline pbrt for comparison.",
+    },
+    "optimized_bvh": {
+        "label": "Optimized (SAH BVH 6-Phase)",
+        "branch": "feat/optimization",
+        "pbrt_exe": PBRT_EXE,  # v3's pbrt with all BVH optimizations
+        "description": "Six-phase BVH optimization: prefix/suffix scan SAH, "
+                       "parameterized costs, adaptive buckets, adaptive leaf "
+                       "threshold, parallel build, SSE ray-box intersection.",
     },
 }
 

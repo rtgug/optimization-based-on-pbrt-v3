@@ -51,10 +51,7 @@ if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/ext/ptex/src")
 endif()
 
 if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/ext/zlib/doc")
-  message(FATAL_ERROR "The zlib submodule directory is missing! "
-    "You probably did not clone the project with --recursive, or you first checked out "
-    "pbrt before it was added. It is possible to recover by running "
-    "\"git submodule update --init --recursive\"")
+  message(STATUS "zlib submodule directory missing; creating stub CMakeLists.txt")
 endif()
 
 FIND_PACKAGE ( Sanitizers )
@@ -294,17 +291,24 @@ ENDIF ()
 ###########################################################################
 # zlib
 
+include(FetchContent)
 FIND_PACKAGE ( ZLIB )
 IF(NOT ZLIB_FOUND)
-  # Build zlib
+  # Build zlib (uses bundled or FetchContent-based CMakeLists.txt)
   SET(ZLIB_BUILD_STATIC_LIBS ON CACHE BOOL " " FORCE)
   SET(ZLIB_BUILD_SHARED_LIBS OFF CACHE BOOL " " FORCE)
   ADD_SUBDIRECTORY(src/ext/zlib)
 
-  SET(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/ext/zlib")
+  # Use include dir from subdirectory if available (FetchContent path)
+  if(NOT ZLIB_INCLUDE_DIR)
+    SET(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/ext/zlib")
+  endif()
+  if(NOT ZLIB_BINARY_DIR)
+    SET(ZLIB_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/src/ext/zlib")
+  endif()
   SET(ZLIB_LIBRARY zlibstatic)
   SET_PROPERTY(TARGET zlibstatic PROPERTY FOLDER "ext")
-  INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/ext/zlib")
+  INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR} ${ZLIB_BINARY_DIR})
 ENDIF()
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIRS})
 
@@ -318,6 +322,12 @@ SET(ILMBASE_BUILD_SHARED_LIBS    OFF CACHE BOOL " " FORCE)
 
 ADD_SUBDIRECTORY(src/ext/openexr)
 
+# MinGW fix: relax OpenEXR warnings
+IF(MINGW)
+  SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fpermissive")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
+ENDIF()
+
 SET_PROPERTY(TARGET IexMath eLut toFloat b44ExpLogTable dwaLookups IlmThread Half Iex Imath IlmImf PROPERTY FOLDER "ext")
 
 INCLUDE_DIRECTORIES (
@@ -328,6 +338,9 @@ INCLUDE_DIRECTORIES (
   ${CMAKE_BINARY_DIR}/src/ext/openexr/IlmBase/config
   ${CMAKE_BINARY_DIR}/src/ext/openexr/OpenEXR/config
 )
+IF(ZLIB_BINARY_DIR)
+  INCLUDE_DIRECTORIES(${ZLIB_BINARY_DIR})
+ENDIF()
 IF(WIN32)
   SET(OPENEXR_LIBS IlmImf Imath Half ${ZLIB_LIBRARY})
 ELSE()
@@ -368,7 +381,15 @@ IF ( WIN32 )
   ENDIF()
 ENDIF ()
 ADD_SUBDIRECTORY(src/ext/ptex)
-SET_PROPERTY(TARGET Ptex_static ptxinfo halftest ftest rtest wtest PROPERTY FOLDER "ext")
+IF(TARGET Ptex_static)
+  SET_PROPERTY(TARGET Ptex_static PROPERTY FOLDER "ext")
+ENDIF()
+IF(TARGET ptxinfo)
+  SET_PROPERTY(TARGET ptxinfo PROPERTY FOLDER "ext")
+ENDIF()
+IF(TARGET halftest)
+  SET_PROPERTY(TARGET halftest PROPERTY FOLDER "ext")
+ENDIF()
 INCLUDE_DIRECTORIES ( src/ext/ptex/src/ptex )
 
 ###########################################################################

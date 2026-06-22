@@ -68,16 +68,20 @@ def modify_scene_spp(scene_path: Path, spp: int, out_path: Path,
 
 
 def render_one(scene_path: Path, output_exr: Path, spp: int,
-               nthreads: int = 0, cwd: Path | None = None) -> dict:
+               nthreads: int = 0, cwd: Path | None = None,
+               pbrt_exe: Path | None = None) -> dict:
     """Run pbrt once; return timing dict.
 
     pbrt writes its output to the filename declared inside the scene
     file, in whatever directory it was launched from.  Set *cwd* to
     the scene's directory so relative ``Include`` paths work.
+
+    *pbrt_exe* overrides the default PBRT_EXE path (for cross-project comparisons).
     """
     start = time.perf_counter()
 
-    cmd = [str(PBRT_EXE)]
+    exe = pbrt_exe if pbrt_exe else PBRT_EXE
+    cmd = [str(exe)]
     if nthreads > 0:
         cmd += ["--nthreads", str(nthreads)]
     cmd.append(str(scene_path))
@@ -111,16 +115,19 @@ def render_one(scene_path: Path, output_exr: Path, spp: int,
     }
 
 
-def run_sweep(scene: Path, experiment_name: str, spp_list: list,
-              nthreads: int = 0) -> list:
+def run_sweep(scene: Path, experiment_name: str, experiment_info: dict,
+              spp_list: list, nthreads: int = 0) -> list:
     """Run one experiment across all SPP values.
 
     Temp scenes are written into the scene's directory so relative
     ``Include`` statements stay valid.  Output images are moved from
     the scene directory to ``results/images/`` after each render.
+
+    *experiment_info* may contain "pbrt_exe" to override the default pbrt binary.
     """
     results = []
     scene_dir = scene.parent
+    pbrt_exe = experiment_info.get("pbrt_exe", PBRT_EXE)
 
     for i, spp in enumerate(spp_list):
         out_exr = IMG_DIR / f"{SCENE_NAME}_{experiment_name}_spp{spp:04d}.pfm"
@@ -139,7 +146,8 @@ def run_sweep(scene: Path, experiment_name: str, spp_list: list,
 
         modify_scene_spp(scene, spp, tmp_scene, OVERRIDE_RESOLUTION,
                          output_name=tmp_stem)
-        r = render_one(tmp_scene, out_exr, spp, nthreads, cwd=scene_dir)
+        r = render_one(tmp_scene, out_exr, spp, nthreads, cwd=scene_dir,
+                       pbrt_exe=pbrt_exe)
         r["image"] = str(out_exr)
 
         # Move pbrt output from scene_dir to results/images/
@@ -220,9 +228,12 @@ def main():
     for exp_name, exp_info in experiments_to_run.items():
         print(f"\n{'='*60}")
         print(f"EXPERIMENT: {exp_info['label']}  ({exp_name})")
+        if exp_info.get("pbrt_exe"):
+            print(f"  PBRT binary: {exp_info['pbrt_exe']}")
         print(f"  SPP sweep: {spp_list}")
         print(f"{'='*60}")
-        results = run_sweep(SCENE_FILE, exp_name, spp_list, args.nthreads)
+        results = run_sweep(SCENE_FILE, exp_name, exp_info,
+                            spp_list, args.nthreads)
 
         # Save results JSON
         data_path = DATA_DIR / f"{SCENE_NAME}_{exp_name}_results.json"
